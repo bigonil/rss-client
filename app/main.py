@@ -1,0 +1,47 @@
+
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+import xml.etree.ElementTree as ET
+import requests
+
+app = FastAPI()
+templates = Jinja2Templates(directory="app/templates")
+
+RSS_URL = "https://www.microsoft.com/releasecommunications/api/v2/azure/rss"
+
+def parse_custom_rss(xml_content):
+    root = ET.fromstring(xml_content)
+    items = []
+    for item in root.findall(".//channel/item"):
+        title = item.findtext("title", default="(No Title)")
+        link = item.findtext("link", default="#")
+        pub_date = item.findtext("pubDate", default="")
+        description = item.findtext("description", default="")
+
+        items.append({
+            "title": title,
+            "link": link,
+            "published": pub_date,
+            "summary": description
+        })
+    return items
+
+@app.get("/", response_class=HTMLResponse)
+async def read_feed(request: Request):
+    try:
+        headers = {
+            "User-Agent": "Mozilla/5.0 (RSS Client - FastAPI)"
+        }
+        response = requests.get(RSS_URL, headers=headers, timeout=10)
+        response.raise_for_status()
+
+        entries = parse_custom_rss(response.content)
+        print(f"✅ Found {len(entries)} entries")
+        for entry in entries[:3]:
+            print("➡️", entry["title"])
+    except Exception as e:
+        print("❌ Error fetching/parsing feed:", e)
+        entries = []
+
+    return templates.TemplateResponse("index.html", {"request": request, "entries": entries})

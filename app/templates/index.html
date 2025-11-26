@@ -1,0 +1,14 @@
+<body>
+    <h1>Azure Status RSS Feed</h1>
+    {% if entries %}
+        {% for entry in entries %}
+            <div class="entry">
+                <h2><a href="{{ entry.link }}">{{ entry.title }}</a></h2>
+                <p><small>{{ entry.published }}</small></p>
+                <p>{{ entry.summary }}</p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No current incidents or status updates.</p>
+    {% endif %}
+</body>
