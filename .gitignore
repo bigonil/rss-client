@@ -1,0 +1,61 @@
+# Python bytecode and cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDE/editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables and secrets
+.env
+*.env
+.env.*
+
+# Logs and runtime artifacts
+*.log
+logs/
+
+# Coverage / test reports
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# Build outputs
+build/
+dist/
+*.egg-info/
+
+# FastAPI/Uvicorn
+# (No runtime artifacts by default, but keep temp files out)
+*.tmp
+
+# Docker
+*.tar
+
+# Cache from tools
+.cache/
+
+# Node (if front-end assets are added later)
+node_modules/
+
+# Local data files
+*.sqlite3
+*.db
+
+# Azure/SendGrid credentials (ensure not committed anywhere)
+# Place keys in .env only
